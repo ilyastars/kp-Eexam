@@ -57,24 +57,46 @@ class JadwalController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Jadwal $jadwal)
+    public function edit(string $id)
     {
-        //
+        $data['jadwal'] = \App\Models\Jadwal::findOrFail($id);
+        return view('jadwal_edit', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Jadwal $jadwal)
+    // public function update(Request $request, Jadwal $jadwal)
+    public function update(Request $request, string $id)
     {
-        //
+        $requestData = $request->validate([
+            'kd_jadwal' => 'required|unique:jadwals,kd_jadwal,' . $id,
+            'skema_id' => 'required',
+            'tgl_ujian' => 'required',
+            'tempat_ujian' => 'required',
+        ]);
+        $jadwal = \App\Models\Jadwal::findOrFail($id); 
+        $jadwal->fill($requestData);
+        $jadwal->save();
+        flash('Data sudah di update')->success();
+        return redirect('/jadwal');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Jadwal $jadwal)
+    // public function destroy(Jadwal $jadwal)
+    public function destroy(string $id)
     {
-        //
+        $jadwal = \App\Models\Jadwal::findOrFail($id);
+
+        if ($jadwal->pendaftaran->count() >= 1) { //data jadwal tidak di hapus apabila sudah ada di data tabel lainya
+            flash('Ops.. Data tidak bisa di hapus karena terkait dengan data pendaftaran')->error();
+            return back();
+        }
+
+        $jadwal->delete();
+        flash('Data sudah di hapus')->success();
+        return back();
     }
 }

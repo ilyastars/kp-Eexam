@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('pesertas', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('transaksi_id');
+            // $table->foreignId('pendaftaran_id');
+            // $table->foreignId('jadwal_id');
             $table->timestamps();
         });
     }

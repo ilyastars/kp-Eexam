@@ -1,3 +1,5 @@
+@if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('user'))
+
 @extends('layouts.app_modern')
 
 @section('content')
@@ -24,7 +26,7 @@
                         </div>
                     
                         <!-- Bagian Info Skema Ujian -->
-                        <div class="row">
+                        {{-- <div class="row">
                             @foreach ($skemas as $skema)
                             <div class="col-md-4 mb-4">
                                 <div class="card">
@@ -44,7 +46,7 @@
                                 </div>
                             </div>
                             @endforeach
-                        </div>
+                        </div> --}}
                     </div>
 
                     {{ __('You are logged in!') }}
@@ -54,3 +56,5 @@
     </div>
 </div>
 @endsection
+
+@endif

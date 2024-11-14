@@ -1,10 +1,15 @@
+@if (auth()->user()->hasRole('admin'))  
+
 @extends('layouts.app_modern', ['title' => 'Data Jadwal']) 
 @section('content') 
 <div class="card">
   <h5 class="card-header">Data Jadwal</h5>
     <div class="card-body">
       {{-- <h3>Data jadwal</h3> --}}
+      @if (auth()->user()->hasRole('admin'))
+          
       <a href="/jadwal/create" class="btn btn-primary">Tambah Data</a>
+      @endif
       <table class="table table-striped">
         <thead>
           <tr>
@@ -26,6 +31,8 @@
                 <td>{{ $item->tempat_ujian }}</td>
                 <td>{{ $item->skema->nama_skema }}</td>
                 <td>{{ $item->created_at }}</td>
+                @if (auth()->user()->hasRole('admin'))
+
                 <td>
                 <a href="/jadwal/{{ $item->id }}/edit" class="btn btn-warning btn-sm">
                     Edit
@@ -38,7 +45,8 @@
                     Hapus
                     </button>
                 </form>
-                </td>
+                </td>           
+                @endif
             </tr> 
           @endforeach 
         </tbody>
@@ -47,3 +55,5 @@
     </div>
 </div> 
 @endsection
+
+@endif

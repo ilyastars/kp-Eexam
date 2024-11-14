@@ -1,12 +1,10 @@
-@if (auth()->user()->hasRole('user'))
-    
 @extends('layouts.app_modern', ['title' => 'Data Pendaftaran']) 
 
 @section('content') 
 <div class="card">
-  <h5 class="card-header">Pendataran Ujian</h5>
+  <h5 class="card-header">Edit Data Pendataran</h5>
     <div class="card-body">
-      <form action="/pendaftaran" method="POST" enctype="multipart/form-data"> 
+      <form action="/daftar_user" method="POST" enctype="multipart/form-data"> 
         @csrf 
         <div class="form-group mt-1 mb-3">
           <label for="kd_pendaftaran">Kode Pendaftaran</label>
@@ -15,19 +13,17 @@
         </div>
         <div class="form-group mt-1 mb-3">
           <label for="nama">Nama</label>
-          <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" value="{{ old('nama', $existingPendaftaran ? $existingPendaftaran->nama : '') }}  {{ $existingPendaftaran ? 'readonly' : '' }}">
+          <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" value="{{ old('nama', $existingPendaftaran ? $existingPendaftaran->nama : '' ?? $pendaftaran->nama) }}  {{ $existingPendaftaran ? 'readonly' : '' }}">
           <span class="text-danger">{{ $errors->first('nama') }}</span>
         </div>
         <div class="form-group mt-1 mb-3">
           <label for="jadwal_id">Jadwal dan Skema</label>
           <input type="text" class="form-control" id="jadwal_display" 
                  value="{{ $jadwal->skema->nama_skema }} - {{ $jadwal->tgl_ujian }}" readonly>
-          <input type="hidden" class="form-control" id="jadwal_display" name="jadwal_id"
-                 value="{{ $jadwal->id }}" readonly>
         </div>
         <div class="form-group mt-1 mb-3">
           <label for="nik">NIK</label>
-          <input type="text" class="form-control @error('nik') is-invalid @enderror" id="nik" name="nik" value="{{ old('nik') }}">
+          <input type="text" class="form-control @error('nik') is-invalid @enderror" id="nik" name="nik" value="{{ old('nik') ?? $jadwal->nik }}">
           <span class="text-danger">{{ $errors->first('nik') }}</span>
         </div>
         <div class="form-group mt-1 mb-3">
@@ -71,24 +67,11 @@
         </div>
         <div class="form-group mt-1 mb-3">
           <label for="pendidikan">Pendidikan</label>
-          <br>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="pendidikan" id="SMA/SMK" value="SMA/SMK" {{ old('pendidikan') === 'SMA/SMK' ? 'checked' : '' }}>
-            <label class="form-check-label" for="SMA/SMK">SMA/SMK</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="pendidikan" id="S1" value="S1" {{ old('pendidikan') === 'S1' ? 'checked' : '' }}>
-            <label class="form-check-label" for="S1">S1</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="pendidikan" id="S2" value="S2" {{ old('pendidikan') === 'S2' ? 'checked' : '' }}>
-            <label class="form-check-label" for="S2">S2</label>
-          </div>
+          <input type="text" class="form-control @error('pendidikan') is-invalid @enderror" id="pendidikan" name="pendidikan" value="{{ old('pendidikan') }}">
+          <span class="text-danger">{{ $errors->first('pendidikan') }}</span>
         </div>
         <button type="submit" class="btn btn-primary">DAFTAR</button>
       </form>
     </div>
   </div> 
 @endsection
-
-@endif

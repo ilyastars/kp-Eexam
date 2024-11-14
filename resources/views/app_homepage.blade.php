@@ -197,7 +197,7 @@
                                 <!-- Menampilkan gambar dari kolom foto -->
                                 <img class="img-fluid" src="{{ asset('storage/' . $item->skema->foto) }}" alt="{{ $item->skema->nama_skema }}">
                                 <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
-                                    <a href="{{ route('daftar_user.create', ['jadwal_id' => $item->id]) }}" class="flex-shrink-0 btn btn-sm btn-primary px-3 w-50" style="border-radius: 30px;">Daftar</a>
+                                    <a href="{{ route('pendaftaran.create', ['jadwal_id' => $item->id]) }}" class="flex-shrink-0 btn btn-sm btn-primary px-3 w-50" style="border-radius: 30px;">Daftar</a>
                                 </div>
                             </div>
                             <div class="text-center p-4 pb-0">
@@ -205,10 +205,11 @@
                                 <h3 class="mb-0">Rp {{ number_format($item->skema->harga, 2, ',', '.') }}</h3>
                                 <div class="mb-3">
                                     <!-- Menampilkan level -->
-                                    <small>({{ ucfirst($item->skema->level) }})</small>
+                                    {{-- <small>({{ ucfirst($item->skema->level) }})</small> --}}
+                                    <small>({{ ucfirst($item->tgl_ujian) }})</small>
                                 </div>
                                 <!-- Menampilkan nama skema -->
-                                <h5 class="mb-4">{{ $item->skema->nama_skema }}</h5>
+                                <h5 class="mb-4">{{ $item->skema->nama_skema }} ( {{ $item->skema->kd_skema }} )</h5>
                             </div>
                         </div>
                     </div>

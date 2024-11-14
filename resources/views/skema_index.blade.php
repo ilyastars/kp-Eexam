@@ -1,10 +1,15 @@
+@if (auth()->user()->hasRole('admin'))
+    
 @extends('layouts.app_modern', ['title' => 'Data Skema']) 
 @section('content') 
 <div class="card">
   <h5 class="card-header">Data Skema</h5>
     <div class="card-body">
       {{-- <h3>Data skema</h3> --}}
+      @if (auth()->user()->hasRole('admin'))
+          
       <a href="/skema/create" class="btn btn-primary">Tambah Data</a>
+      @endif
       <table class="table table-striped">
         <thead>
           <tr>
@@ -31,7 +36,9 @@
             <td>{{ $item->level }}</td>
             <td>{{ $item->harga }}</td>
             <td>{{ $item->created_at }}</td>
+            @if (auth()->user()->hasRole('admin'))
             <td>
+                  
               <a href="/skema/{{ $item->id }}/edit" class="btn btn-warning btn-sm">
                 Edit
               </a>
@@ -44,6 +51,7 @@
                 </button>
               </form>
             </td>
+            @endif
           </tr> 
           @endforeach 
         </tbody>
@@ -52,3 +60,5 @@
     </div>
 </div> 
 @endsection
+
+@endif

@@ -1,3 +1,5 @@
+@if (auth()->user()->hasRole('admin'))
+    
 @extends('layouts.app_modern', ['title' => 'Data Skema']) 
 @section('content') 
 <div class="card">
@@ -43,3 +45,5 @@
     </div>
   </div> 
 @endsection
+
+@endif

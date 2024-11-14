@@ -1,10 +1,15 @@
+@if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('user'))
+    
 @extends('layouts.app_modern', ['title' => 'Data Pendaftaran']) 
 @section('content') 
 <div class="card">
   <h5 class="card-header">Data Pendaftaran</h5>
     <div class="card-body">
       {{-- <h3>Data pendaftaran</h3> --}}
-      <a href="/pendaftaran/create" class="btn btn-primary">Tambah Data</a>
+      @if (auth()->user()->hasRole('user'))
+          
+      {{-- <a href="/pendaftaran/create" class="btn btn-primary">Tambah Data</a> --}}
+      @endif
       <div class="table-responsive">
         <table class="table table-striped">
           <thead>
@@ -42,6 +47,8 @@
                   <td>{{ $item->no_hp }}</td>
                   <td>{{ $item->pendidikan }}</td>
                   <td>{{ $item->created_at }}</td>
+                  @if (auth()->user()->hasRole('admin'))
+                      
                   <td>
                   <a href="/pendaftaran/{{ $item->id }}/edit" class="btn btn-warning btn-sm">
                       Edit
@@ -55,6 +62,7 @@
                       </button>
                   </form>
                   </td>
+                  @endif
               </tr> 
             @endforeach 
           </tbody>
@@ -64,3 +72,5 @@
     </div>
 </div> 
 @endsection
+
+@endif
