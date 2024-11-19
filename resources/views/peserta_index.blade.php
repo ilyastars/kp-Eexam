@@ -9,7 +9,7 @@
         <thead>
           <tr>
             <th>NO</th>
-            <th>Kode Pendaftaran</th>
+            <th>Kode Transaksi</th>
             <th>Nama</th>
             <th>Nama Skema</th>
             <th>Jadwal Ujian</th>

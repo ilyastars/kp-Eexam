@@ -1,50 +1,43 @@
 @extends('layouts.app_modern', ['title' => 'Data Transaksi']) 
-@section('content') 
-<div class="card">
-  <h5 class="card-header">Data Transaksi</h5>
-    <div class="card-body">
-      {{-- <h3>Data transaksi</h3> --}}
-      <a href="/transaksi/create" class="btn btn-primary">Tambah Data</a>
-      <table class="table table-striped">
+{{-- @extends('layouts.app') --}}
+
+@section('content')
+<div class="container">
+    <h2>Data Transaksi</h2>
+    <table class="table table-striped">
         <thead>
-          <tr>
-            <th>NO</th>
-            <th>Kode Transaksi</th>
-            <th>Tanggal Bayar</th>
-            <th>Status Bayar</th>
-            <th>Id Pendaftaran</th>
-            <th>Id Skema</th>
-            <th>AKSI</th>
-          </tr>
-        </thead>
-        <tbody> 
-            @foreach ($transaksi as $item) 
             <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $item->kd_transaksi }}</td>
-                <td>{{ $item->tgl_bayar }}</td>
-                <td>{{ $item->status_bayar }}</td>
-                <td>{{ $item->pendaftaran_id }}</td>
-                <td>{{ $item->skema_id }}</td>
-                <td>{{ $item->created_at }}</td>
-                <td>
-                <a href="/transaksi/{{ $item->id }}/edit" class="btn btn-warning btn-sm">
-                    Edit
-                </a>
-                <form action="/transaksi/{{ $item->id }}" method="post" class="d-inline">
-                    @csrf
-                    @method('delete')
-                    <button class="btn btn-danger btn-sm ml-2" 
-                    onclick="return confirm('Yakin ingin menghapus data?')">
-                    Hapus
-                    </button>
-                </form>
-                </td>
-            </tr> 
-          @endforeach 
+                <th>KD Transaksi</th>
+                <th>Nama Pendaftaran</th>
+                <th>Status Bayar</th>
+                <th>Bukti Bayar</th>
+                {{-- @if (auth()->user()->hasRole('user')) 
+                    <div class="form-group">
+                        <label for="bukti_bayar">Upload Bukti Bayar</label>
+                        <input type="file" class="form-control" name="bukti_bayar" accept="image/*">
+                    </div>
+                @endif  --}}
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($transaksis as $transaksi)
+                <tr>
+                    <td>{{ $transaksi->kd_transaksi }}</td>
+                    <td>{{ $transaksi->pendaftaran->nama }}</td>
+                    <td>{{ $transaksi->status_bayar }}</td>
+                    <td>
+                        @if (auth()->user()->hasRole('admin'))
+                            {{ $transaksi->bukti_bayar }}                            
+                        @else
+                            <input type="file" class="form-control" name="bukti_bayar" accept="image/*">
+                        @endif
+                            
+                    </td>
+
+                </tr>
+            @endforeach
         </tbody>
-      </table>
-      {!! $transaksi->links() !!}
-    </div>
-</div> 
+    </table>
+</div>
 @endsection

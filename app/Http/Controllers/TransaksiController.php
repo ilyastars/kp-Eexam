@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Peserta;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
@@ -12,15 +13,39 @@ class TransaksiController extends Controller
      */
     public function index()
     {
-        //
+        // $transaksi = \App\Models\Transaksi::with('pendaftaran.user')->latest()->paginate(20);
+        // return view('transaksi_index', compact('transaksi'));
+        $transaksis = Transaksi::with('pendaftaran')->get(); // Pastikan relasi 'pendaftaran' ada di model Transaksi
+        return view('transaksi_index', compact('transaksis'));
     }
+
+    public function updateStatus(Request $request, Transaksi $transaksi)
+    {
+        $request->validate([
+            'status_bayar' => 'required|in:pending,completed',
+        ]);
+
+        if ($request->status_bayar === 'completed') {
+            $peserta = new Peserta();
+            $peserta->transaksi_id = $transaksi->id;
+            $peserta->nama = $transaksi->pendaftaran->nama;
+            $peserta->nama_skema = $transaksi->pendaftaran->jadwal->skema->nama_skema;
+            $peserta->save();
+        }
+
+        $transaksi->status_bayar = $request->status_bayar;
+        $transaksi->save();
+
+        return redirect()->back()->with('success', 'Status pembayaran berhasil diperbarui!');
+    }
+
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        
     }
 
     /**

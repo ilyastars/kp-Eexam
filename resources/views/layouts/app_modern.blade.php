@@ -65,7 +65,8 @@
                   <span>
                     <i class="ti ti-user"></i>
                   </span>
-                  <span class="hide-menu">Kelola Pendaftaran</span>
+                  <span class="hide-menu"> 
+                    @if (auth()->user()->hasRole('admin')) Kelola @endif  Pendaftaran</span>
                 </a>
               </li>
               <li class="sidebar-item">
@@ -73,7 +74,7 @@
                   <span>
                     <i class="ti ti-user"></i>
                   </span>
-                  <span class="hide-menu">Kelola Transaksi</span>
+                  <span class="hide-menu">@if (auth()->user()->hasRole('admin')) Kelola @endif Transaksi</span>
                 </a>
               </li>
               <li class="sidebar-item">
@@ -81,7 +82,7 @@
                   <span>
                     <i class="ti ti-user"></i>
                   </span>
-                  <span class="hide-menu">Kelola Peserta</span>
+                  <span class="hide-menu">@if (auth()->user()->hasRole('admin')) Kelola @endif Peserta</span>
                 </a>
               </li>
 

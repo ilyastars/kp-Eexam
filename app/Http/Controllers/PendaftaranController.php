@@ -77,9 +77,26 @@ class PendaftaranController extends Controller
         $pendaftaran->user_id = Auth::user()->id; 
         // dd(Auth::user()->id);
         $pendaftaran->save(); 
-        flash('Anda berhasil mendaftar')->success();
+        // flash('Anda berhasil mendaftar')->success();
         // return back();
-        redirect('pendaftaran');
+        // redirect('pendaftaran');
+
+        // Buat data transaksi otomatis
+        $transaksi = new \App\Models\Transaksi();
+        $transaksi->kd_transaksi = 'T' . $pendaftaran->kd_pendaftaran;
+        $transaksi->status_bayar = 'pending';
+        $transaksi->pendaftaran_id = $pendaftaran->id;
+
+        if ($request->hasFile('bukti_bayar')) {
+            $fileName = time() . '_' . $request->file('bukti_bayar')->getClientOriginalName();
+            $path = $request->file('bukti_bayar')->storeAs('bukti_bayar', $fileName, 'public');
+            $transaksi->bukti_bayar = $path;
+        }
+        
+        $transaksi->save();
+        flash('Pendaftaran berhasil, silahkan lanjut melakukan pembayaran.')->success();
+        return redirect()->route('transaksi.index');
+
     }
 
     /**
