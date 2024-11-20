@@ -12,8 +12,8 @@ class PesertaController extends Controller
      */
     public function index()
     {
-        $peserta = Peserta::with('transaksi')->get(); // Pastikan relasi 'pendaftaran' ada di model Transaksi
-        return view('peserta_index', compact('peserta'));
+        $pesertas = Peserta::with('transaksi')->get(); // Pastikan relasi 'pendaftaran' ada di model Transaksi
+        return view('peserta_index', compact('pesertas'));
     }
 
     /**

@@ -11,6 +11,7 @@ use Illuminate\Auth\Middleware\Authenticate;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\PendaftaranController;
 use App\Models\Pendaftaran;
+use App\Models\Transaksi;
 
 // Route::get('/', function () {
 //     return view('app_homepage'); // asalnya welcome
@@ -43,6 +44,11 @@ Route::middleware([Authenticate::class])->group(function(){
     Route::resource('jadwal', JadwalController::class);
     Route::resource('skema', SkemaController::class);
     Route::resource('transaksi', TransaksiController::class);
+
+    Route::patch('/transaksi/{id}', [TransaksiController::class, 'updateStatus'])->name('transaksi.updateStatus');
+    // Route::post('/transaksi', [TransaksiController::class, 'uploadBuktiBayar'])->name('transaksi.uploadBuktiBayar');
+    Route::patch('/transaksi/{id}/upload-bukti-bayar', [TransaksiController::class, 'uploadBuktiBayar'])->name('transaksi.uploadBuktiBayar');
+    // Route::patch('/transaksi/review', [TransaksiController::class, 'review'])->name('transaksi.review');
 });
 
     // Route::get('pendaftaran/{jadwal_id}', [PendaftaranController::class, 'create'])->middleware(['auth', 'verified', 'role:user'])->name('pendaftaran.create');
@@ -63,8 +69,8 @@ Route::middleware([Authenticate::class])->group(function(){
         PendaftaranController::class, 'create'
         ])->middleware(['auth', 'verified', 'role:user'])->name('pendaftaran.create');
         // Route::get('/pendaftaran/{jadwal_id}', [PendaftaranController::class, 'create'])->name('pendaftaran.create');
-    Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
-    Route::get('/pendaftaran', [PendaftaranController::class, 'index'])->name('pendaftaran.index');
+        Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
+        Route::get('/pendaftaran', [PendaftaranController::class, 'index'])->name('pendaftaran.index');
 
         Route::get('/pendaftaran/edit', [PendaftaranController::class, 'edit'])->name('pendaftaran.edit');
         Route::patch('/pendaftaran/update', [PendaftaranController::class, 'update'])->name('pendaftaran.update');

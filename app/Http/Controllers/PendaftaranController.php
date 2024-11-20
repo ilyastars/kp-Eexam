@@ -7,6 +7,7 @@ use App\Models\Jadwal;
 use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class PendaftaranController extends Controller
 {
@@ -87,6 +88,7 @@ class PendaftaranController extends Controller
         $transaksi->status_bayar = 'pending';
         $transaksi->pendaftaran_id = $pendaftaran->id;
 
+        //buat bukti bayar
         if ($request->hasFile('bukti_bayar')) {
             $fileName = time() . '_' . $request->file('bukti_bayar')->getClientOriginalName();
             $path = $request->file('bukti_bayar')->storeAs('bukti_bayar', $fileName, 'public');
@@ -94,6 +96,38 @@ class PendaftaranController extends Controller
         }
         
         $transaksi->save();
+
+        // sintak api message wa
+        $msg = "Halo Kak $pendaftaran->nama,\n\n" .
+        "Selamat, pendaftaran Anda untuk ujian sertifikasi BNSP telah berhasil dengan rincian sebagai berikut:\n\n" .
+        "```" . // Awal format monospaced
+        sprintf("%-15s: %s\n", "Nama", $pendaftaran->nama) .
+        sprintf("%-15s: %s\n", "Nama Skema", $pendaftaran->jadwal->skema->nama_skema) .
+        sprintf("%-15s: %s\n", "Tanggal Ujian", $pendaftaran->jadwal->tgl_ujian) .
+        "\n" .
+        sprintf("%-15s: Rp %s\n", "Nominal", number_format($pendaftaran->jadwal->skema->harga, 0, ',', '.')) .
+        "\n" .
+        sprintf("%-15s: %s\n", "Bank", "BCA") .
+        sprintf("%-15s: %s\n", "Atas Nama", "PT Anugerah Komputer Indonesia") .
+        sprintf("%-15s: %s\n", "No Rek", "111-222-3333") .
+        "```" . // Akhir format monospaced
+        "\nTerima kasih atas pendaftaranya.";
+        
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json'
+        ])->withOptions([
+            'debug' => false,
+            'connect_timeout' => false,
+            'timeout' => false,
+            'verify' => false,
+        ])->post('https://crm.woo-wa.com/send/message-text', [
+            'deviceId' => 'd_ID@undefined_qhshRmlGcImwSWKyY',
+            'number' => $pendaftaran->no_hp,
+            'message' => $msg
+        ]);
+        // end sintak api
+
+
         flash('Pendaftaran berhasil, silahkan lanjut melakukan pembayaran.')->success();
         return redirect()->route('transaksi.index');
 
