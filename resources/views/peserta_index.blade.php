@@ -1,8 +1,10 @@
+@if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('user'))
+
 @extends('layouts.app_modern', ['title' => 'Data Peserta'])
 
 @section('content')
-<div class="container">
-    <h2>Data Peserta</h2>
+<div class="card">
+    <h3 class="card-header">Data Peserta</h5>
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -15,15 +17,36 @@
                 <th>Nama</th>
                 <th>Nama Skema</th>
                 <th>Jadwal</th>
+                <th>Link Group</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($pesertas as $peserta)
+            {{-- Filter data berdasarkan role --}}
+            @php
+            $filteredPeserta = auth()->user()->hasRole('user') 
+                ? $pesertas->filter(fn($item) => $item->transaksi->pendaftaran && $item->transaksi->pendaftaran->user_id === auth()->id()) 
+                : $pesertas;
+            @endphp
+
+            {{-- Tampilkan data pendaftaran --}}
+            {{-- @foreach ($filteredPendaftaran as $item) --}}
+            @foreach($filteredPeserta as $peserta)
                 <tr>
                     <td>{{ $peserta->transaksi->kd_transaksi }}</td>
                     <td>{{ $peserta->transaksi->pendaftaran->nama }}</td>
                     <td>{{ $peserta->transaksi->pendaftaran->jadwal->skema->nama_skema }}</td>
                     <td>{{ $peserta->transaksi->pendaftaran->jadwal->tgl_ujian }}</td>
+                    {{-- <td>{{ $peserta->transaksi->pendaftaran->jadwal->link_group }}</td> --}}
+                    <td>
+                        @if ($peserta->transaksi->pendaftaran->jadwal->link_group)
+                            <a href="{{ $peserta->transaksi->pendaftaran->jadwal->link_group }}" target="_blank" class="btn btn-success btn-sm">
+                                Join Group
+                            </a>
+                        @else
+                            <span class="text-muted">No Link Available</span>
+                        @endif
+                    </td>
+                    
                     @if (auth()->user()->hasRole('admin'))
                       
                     <td>
@@ -46,3 +69,5 @@
     </table>
 </div>
 @endsection
+
+@endif

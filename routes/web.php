@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AkunController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SkemaController;
@@ -40,6 +41,7 @@ Route::get('logout', function(){
 Route::middleware([Authenticate::class])->group(function(){
     // Route::resource('pendaftaran', PendaftaranController::class);
 
+    Route::resource('akun', AkunController::class);
     Route::resource('peserta', PesertaController::class);
     Route::resource('jadwal', JadwalController::class);
     Route::resource('skema', SkemaController::class);

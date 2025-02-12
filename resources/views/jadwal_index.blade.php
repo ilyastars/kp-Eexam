@@ -3,7 +3,7 @@
 @extends('layouts.app_modern', ['title' => 'Data Jadwal']) 
 @section('content') 
 <div class="card">
-  <h5 class="card-header">Data Jadwal</h5>
+  <h3 class="card-header">Data Jadwal</h3>
     <div class="card-body">
       {{-- <h3>Data jadwal</h3> --}}
       @if (auth()->user()->hasRole('admin'))

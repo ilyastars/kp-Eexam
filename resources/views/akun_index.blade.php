@@ -3,7 +3,7 @@
 @extends('layouts.app_modern', ['title' => 'Data Pendaftaran']) 
 @section('content') 
 <div class="card">
-  <h3 class="card-header">Data Pendaftaran</h3>
+  <h3 class="card-header">Data Akun</h3>
   <div class="card-body">
     {{-- Tombol tambah data hanya untuk user --}}
     @if (auth()->user()->hasRole('user'))

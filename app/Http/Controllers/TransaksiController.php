@@ -162,7 +162,7 @@ class TransaksiController extends Controller
 
         // sintak api message wa
         $msg = "Halo Kak " . $transaksi->pendaftaran->nama . ",\n\n" .
-        "Selamat pembayaran Anda untuk ujian sertifikasi BNSP sudah completed, dengan rincian sebagai berikut:\n\n" .
+        "Selamat pembayaran Anda untuk ujian sertifikasi BNSP sudah completed, dengan data pendaftaran sebagai berikut:\n\n" .
         "```" . // Awal format monospaced
         sprintf("%-15s: %s\n", "Nama", $transaksi->pendaftaran->nama) .
         sprintf("%-15s: %s\n", "Nama Skema", $transaksi->pendaftaran->jadwal->skema->nama_skema) .
@@ -170,8 +170,9 @@ class TransaksiController extends Controller
         sprintf("%-15s: Rp %s\n", "Nominal", number_format($transaksi->pendaftaran->jadwal->skema->harga, 0, ',', '.')) .
         "\n" .
         "```" . // Akhir format monospaced
-        "Silahkan Anda bisa melanjutkan ujian dengan melakukan pengecekan di *Menu Peserta* pada dashboard eExam nya yaa.\n" .
-        "Terima kasih atas pendaftaran dan pembayaranya.";
+        "Silahkan Anda bisa melanjutkan ujian dengan melakukan pengecekan di Menu Peserta pada dashboard eExam nya atau untuk detail info lebih lanjut Anda bisa langsung join ke group di bawah ini:\n" .
+        $transaksi->pendaftaran->jadwal->link_group;
+        "\nTerima kasih atas pendaftaran dan pembayaranya yaa.";
         
         $response = Http::withHeaders([
             'Content-Type' => 'application/json'

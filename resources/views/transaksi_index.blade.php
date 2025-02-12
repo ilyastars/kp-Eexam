@@ -33,7 +33,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($transaksis as $transaksi)
+                    {{-- Filter data berdasarkan role --}}
+                    @php
+                    $filteredTransaksi = auth()->user()->hasRole('user') 
+                        ? $transaksis->filter(fn($item) => $item->pendaftaran && $item->pendaftaran->user_id === auth()->id()) 
+                        : $transaksis;
+                    @endphp
+
+                    {{-- Tampilkan data transaksi --}}
+                    {{-- @foreach($transaksis as $transaksi) --}}
+                    @foreach($filteredTransaksi as $transaksi)
                         <tr>
                             <td>{{ $transaksi->kd_transaksi }}</td>
                             <td>{{ $transaksi->pendaftaran->nama }}</td>

@@ -3,7 +3,7 @@
 @extends('layouts.app_modern', ['title' => 'Data Skema']) 
 @section('content') 
 <div class="card">
-  <h5 class="card-header">Data Skema</h5>
+  <h3 class="card-header">Data Skema</h3>
     <div class="card-body">
       {{-- <h3>Data skema</h3> --}}
       @if (auth()->user()->hasRole('admin'))
